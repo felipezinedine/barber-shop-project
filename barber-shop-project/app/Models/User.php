@@ -44,4 +44,21 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    // public function validateRegister($request)
+    // {
+    //     $auth = $request->validate([
+    //         'name' => ['required'],
+    //         'email' => ['email', 'required'],
+    //         'phone' => ['required', 'unique:users,cellphone,'. $this->user->id .',id'],
+    //     ], [
+    //         'name.required' => 'O campo nome é obrigatório',
+    //         'email.email' => 'Preencha com um email válido',
+    //         'email.required' => 'O campo email é obrigatório',
+    //         'phone.unique' => 'Este telefone já está em uso, faça o login para ter acesso a sua conta',
+    //         'phone.required'  => 'O campo telefone é obrigatório'
+    //     ]);
+
+    //     return $auth;
+    // }
 }

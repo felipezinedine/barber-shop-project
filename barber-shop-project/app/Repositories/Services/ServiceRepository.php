@@ -8,4 +8,5 @@ interface ServiceRepository
     public function search($request);
     public function getAll($request);
     public function find($id);
+    public function events($startOfWeek, $endOfWeek, $id);
 }

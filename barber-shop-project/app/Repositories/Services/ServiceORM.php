@@ -3,12 +3,14 @@
 namespace App\Repositories\Services;
 
 use App\Models\Services;
+use App\Models\Scheduling;
 use Illuminate\Http\Request;
 
 class ServiceORM implements ServiceRepository
 {
     public function __construct(
         protected Services $services,
+        protected Scheduling $scheduling,
     ) {}
 
     public function getAll($request)
@@ -39,5 +41,14 @@ class ServiceORM implements ServiceRepository
     {
         $service = $this->services->setConnection('mysql')->where('id', '=', $id)->first();
         return $service;
+    }
+
+    public function events($startOfWeek, $endOfWeek, $id)
+    {
+        $events = $this->scheduling->setConnection('mysql')
+                       ->where('professional_id', '=', $id)
+                       ->whereBetween('date', [$startOfWeek, $endOfWeek])
+                       ->get();
+        return $events;
     }
 }

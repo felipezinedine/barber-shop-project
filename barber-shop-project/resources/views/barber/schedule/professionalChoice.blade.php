@@ -10,8 +10,8 @@
 
 <body class="barbershop-bg">
     @include('barber.schedule.inc.nav')
-    <section class="container d-flex flex-column align-items-center justify-content-center">
-        <div class="container mb-5 mt-4">
+    <section class="d-flex flex-column align-items-center justify-content-center">
+        <div class="mb-5 mt-4">
             <h5 class="text-center font-weight-bold">
                 @if ($service->service == 'Corte')
                 <div class="d-inline-flex align-items-center">
@@ -24,9 +24,15 @@
                         $service->service == 'Corte e Selagem' ||
                         $service->service == 'Sobrancelha' ||
                         $service->service == 'Selagem')
-                    <h5 class="card-title text-center">*{{ $service->service }}</h5>
+                    <div class="d-inline-flex align-items-center">
+                        <h6 class="card-title text-center ms-1 small">*{{ $service->service }}</h6>
+                        <a class="text-decoration-none text-center ms-5 small" href="/schedule/new"><i class="fa-solid fa-arrow-right-arrow-left"></i>Alterar</a>
+                    </div>
                 @else
-                    <h5 class="card-title text-center">{{ $service->service }}</h5>
+                <div class="d-inline-flex align-items-center">
+                    <h6 class="card-title text-center ms-1 small">{{ $service->service }}</h6>
+                    <a class="text-decoration-none text-center ms-5 small" href="/schedule/new"><i class="fa-solid fa-arrow-right-arrow-left"></i>Alterar</a>
+                </div>
                 @endif
             </h5>
         </div>
@@ -34,38 +40,29 @@
             <h5 class="text-center font-weight-bold">Escolha o Profissional</h5>
         </div>
 
-        {{-- <div class="mt-5">
+        <div class="mt-5">
             <div class="row clearfix card-body">
-                @foreach ($services as $service)
+                @foreach ($professionals as $prof)
                     <div class="col-md-3">
                         <div class="card mb-3 shadow-sm hover-effect card-hover">
                             <div class="card-body">
-                                @if ($service->service == 'Corte')
-                                    <h5 class="card-title text-center">#{{ $service->service }}</h5>
-                                @elseif (
-                                    $service->service == 'Barba' ||
-                                        $service->service == 'Corte e Barba' ||
-                                        $service->service == 'Corte e Selagem' ||
-                                        $service->service == 'Sobrancelha' ||
-                                        $service->service == 'Selagem')
-                                    <h5 class="card-title text-center">*{{ $service->service }}</h5>
-                                @else
-                                    <h5 class="card-title text-center">{{ $service->service }}</h5>
-                                @endif
-                                <span class="card-text">Duração: {{ $service->time }} min</span>
-                                <p class="card-text">Preço: R$ {{ number_format($service->price, 2, ',', '.') }}</p>
+
+                                <p class="card-title text-center">
+                                    <img width="30%" src="./../../../../img/picture-profile-icon-male-icon-human-or-people-sign-and-symbol-free-vector.jpg" class="rounded-circle" alt="...">
+                                </p>
+                                <h6 class="card-text text-center">{{ $prof->name }}</h6>
                                 <hr>
                                 <div class="text-center">
-                                    <a href="/schedule/{{ $service->id }}/professional/choice"
-                                        class="btn text-decoration-none"><i class="fa-solid fa-calendar-day"></i>
-                                        RESERVAR</a>
+                                    <a href="/schedule/{{ $service->id }}/professional/choice/{{$prof->id}}"
+                                        class="btn text-decoration-none"> SELECIONAR
+                                    </a>
                                 </div>
                             </div>
                         </div>
                     </div>
                 @endforeach
             </div>
-        </div> --}}
+        </div>
     </section>
 
 
@@ -84,6 +81,7 @@
     <script src="js/datatables-simple-demo.js"></script>
 
     <script>
+        $('.dropdown-toggle').dropdown()
         $(function() {
             $('#search').keyup(function() {
                 var search = $('#search').val();

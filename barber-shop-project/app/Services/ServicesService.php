@@ -28,4 +28,9 @@ class ServicesService
     {
         return $this->repository->search($request);
     }
+
+    public function events($startOfWeek, $endOfWeek, $id)
+    {
+        return $this->repository->events($startOfWeek, $endOfWeek, $id);
+    }
 }
