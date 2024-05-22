@@ -25,7 +25,7 @@
                     </a>
                 </div>
                 <div class="col-md-6 mt-5">
-                    <a href="" class="text-center text-decoration-none">
+                    <a href="/reservations/" class="text-center text-decoration-none">
                         <div class="card text-center custom-bg-blue text-white card-hover">
                             <div class="card-body">
                                 <h3><i class="fa-solid fa-clipboard-list"></i></h3>

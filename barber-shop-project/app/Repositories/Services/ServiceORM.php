@@ -29,17 +29,11 @@ class ServiceORM implements ServiceRepository
         return $services;
     }
 
-    public function search($request)
-    {
-        $query = $this->services->setConnection('mysql')
-                      ->where('service', 'like', '%'. $request->search .'%')
-                      ->get();
-        return $query;
-    }
-
     public function find($id)
     {
-        $service = $this->services->setConnection('mysql')->where('id', '=', $id)->first();
+        $service = $this->services->setConnection('mysql')
+                        ->where('id', '=', $id)
+                        ->first();
         return $service;
     }
 

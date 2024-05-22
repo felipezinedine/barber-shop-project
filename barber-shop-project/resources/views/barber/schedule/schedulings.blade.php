@@ -41,7 +41,7 @@
                             class="rounded-circle" alt="...">
                         <h6 class="card-title profile-name ml-2">{{ $prof->name }}</h6>
                     </div>
-                    <a class="text-decoration-none small profile-link mr-link" href="/schedule/new">
+                    <a class="text-decoration-none small profile-link mr-link" href="/schedule/{{$cut->id}}/professional/choice/">
                         <i class="fa-solid fa-arrow-right-arrow-left"></i> Alterar
                     </a>
                 </div>
@@ -68,6 +68,7 @@
             var calendarId = document.getElementById('calendar');
             var calendar = new FullCalendar.Calendar(calendarId, {
                 locale: 'pt-br',
+                timeZone: 'local',
                 initialView: 'timeGridWeek',
                 headerToolbar: {
                     left: 'prev,next',
@@ -82,6 +83,10 @@
                     list: 'Lista'
                 },
                 events: '/schedule/events/weekly/{{ $prof->id }}',
+                validRange: {
+                    start: '2024-01-01',
+                    end: '2030-12-31'
+                },
                 eventTimeFormat: {
                     hour: 'numeric',
                     minute: '2-digit',
@@ -101,8 +106,8 @@
                         return;
                     }
 
-                    userId = {{auth()->user()->id}}
-                    profId = {{$prof->id}}
+                    userId = {{ auth()->user()->id }}
+                    profId = {{ $prof->id }}
                     var eventData = {
                         title: 'HORÁRIO MARCADO',
                         start: selectedDateTime.toISOString(),
@@ -110,7 +115,9 @@
                         profId: profId
                     };
 
-                    window.location.href = '/schedule/add/events?start=' + encodeURIComponent(selectedDateTime.toISOString()) + '&userId=' + userId + '&profId='+ {{$prof->id}} + '&cutId=' + {{$cut->id}};
+                    window.location.href = '/schedule/add/events?start=' + encodeURIComponent(
+                            selectedDateTime.toISOString()) + '&userId=' + userId + '&profId=' +
+                        {{ $prof->id }} + '&cutId=' + {{ $cut->id }};
 
                     calendar.unselect();
                 }

@@ -18,4 +18,9 @@ class Scheduling extends Model
     {
         return $this->hasOne(Services::class, 'id', 'service_id');
     }
+
+    public function user()
+    {
+        return $this->hasOne(User::class, 'id', 'professional_id');
+    }
 }

@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Barber\BarberController;
 use App\Http\Controllers\Barber\StartingController;
+use App\Http\Controllers\Barber\ReservationController;
 use App\Http\Controllers\Barber\Schedule\ScheduleController;
 
 
@@ -27,12 +28,19 @@ Route::prefix('barber')->group(function (){
 });
 
 Route::prefix('schedule')->group(function () {
+
     Route::get('/', [ScheduleController::class, 'index']);
     Route::get('/new', [ScheduleController::class, 'newSchedule']);
-    Route::get('/{id}/professional/choice', [ScheduleController::class, 'professionalChoice'])->middleware(Auth::class);
-    Route::get('/{cut}/professional/choice/{professional}', [ScheduleController::class,'scheduling']);
-    Route::get('/new/search', [ScheduleController::class, 'search']);
-    Route::get('/add/events', [ScheduleController::class, 'lastStep']);
-    Route::get('/events/weekly/{profId}', [ScheduleController::class, 'getWeeklyEvents'])->name('events.weekly');
     Route::get('/events/all', [ScheduleController::class,'eventsAll']);
+    Route::get('/add/events', [ScheduleController::class, 'lastStep']);
+    Route::get('/events/weekly/{profId}', [ScheduleController::class, 'getWeeklyEvents']);
+    Route::get('/{cut}/professional/choice/{professional}', [ScheduleController::class,'scheduling']);
+    Route::get('/{id}/professional/choice', [ScheduleController::class, 'professionalChoice'])->middleware(Auth::class);
+
+    Route::post('/completed', [ScheduleController::class, 'scheduleCompleted']);
+});
+
+Route::prefix('reservations')->middleware(Auth::class)->group(function () {
+    Route::get('/', [ReservationController::class, 'index']);
+    Route::get('/cancel/{id}', [ReservationController::class, 'delete']);
 });

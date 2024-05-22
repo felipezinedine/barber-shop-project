@@ -3,17 +3,22 @@
 namespace App\Http\Controllers\Barber\Schedule;
 
 use Carbon\Carbon;
+use App\Models\Help;
 use Illuminate\Http\Request;
 use App\Services\UserService;
+use App\Services\ScheduleService;
 use App\Services\ServicesService;
 use App\Http\Controllers\Controller;
+use App\DTOs\Schedule\ScheduleCreateDTO;
 
 class ScheduleController extends Controller
 {
     public function __construct(
+        protected ScheduleService $schedulling,
         protected ServicesService $service,
         protected UserService $userService,
-    ) {}
+    ) {
+    }
     public function index()
     {
         return view('barber.schedule.index');
@@ -50,9 +55,17 @@ class ScheduleController extends Controller
     public function getWeeklyEvents($professionalId)
     {
         $events = $this->service->events($professionalId);
-        $formattedEvents = $events->map(function($event) {
-            $start = Carbon::parse($event->time)->addHours(3)->toIso8601String();
-            $end = Carbon::parse($event->time)->addHours(3)->addMinutes(intval($event->services->time))->toIso8601String();
+
+        $formattedEvents = $events->map(function ($event) {
+
+            $start = Carbon::parse($event->date . ' ' . $event->time)
+                ->setTimezone('UTC')
+                ->format('Y-m-d H:i:s');
+
+            $end = Carbon::parse($event->date . ' ' . $event->time)
+                ->setTimezone('UTC')
+                ->addMinutes(intval($event->services->time))
+                ->format('Y-m-d H:i:s');
 
             return [
                 'title' => $event->title,
@@ -60,13 +73,16 @@ class ScheduleController extends Controller
                 'end' => $end
             ];
         });
+
         return json_encode($formattedEvents);
     }
 
     public function lastStep(Request $request)
     {
-        $data = Carbon::create($request->get('start'))->format('Y-m-d');
-        $hours = Carbon::create($request->get('start'))->format('H:i:s');
+        session()->put('date', $request->get('start'));
+
+        $data = Help::dateTimeBr($request->get('start'));
+        $hours = Carbon::create($request->get('start'))->addHours(-3)->format('H:i');
 
         $data = [
             'data' => $data,
@@ -77,5 +93,16 @@ class ScheduleController extends Controller
         ];
 
         return view('barber.schedule.lastStep', $data);
+    }
+
+    public function scheduleCompleted(Request $request)
+    {
+        $schedulling = $this->schedulling->create(ScheduleCreateDTO::createNewSchedulling($request));
+
+        if(isset($schedulling) && $schedulling != null && $schedulling != false){
+            return redirect('/reservations/');
+        } else {
+            return redirect()->back();
+        }
     }
 }

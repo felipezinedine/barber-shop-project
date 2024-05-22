@@ -33,7 +33,7 @@
                 <a class="nav-link active text-light" href="/schedule/new">AGENDAR</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link active text-light" href="#">RESERVAS</a>
+                <a class="nav-link active text-light" href="/reservations/">RESERVAS</a>
             </li>
         </ul>
     </div>
