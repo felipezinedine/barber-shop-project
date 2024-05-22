@@ -41,11 +41,41 @@ class ScheduleController extends Controller
         return view('barber.schedule.schedulings', $data);
     }
 
-    public function getWeeklyEvents($date, $professionalId)
+    public function eventsAll()
     {
-        $startOfWeek = Carbon::parse($date)->startOfWeek();
-        $endOfWeek = Carbon::parse($date)->endOfWeek();
-        $events = $this->service->events($startOfWeek, $endOfWeek, $professionalId);
-        return response()->json($events);
+        $events = $this->service->eventsAll();
+        return json_encode($events);
+    }
+
+    public function getWeeklyEvents($professionalId)
+    {
+        $events = $this->service->events($professionalId);
+        $formattedEvents = $events->map(function($event) {
+            $start = Carbon::parse($event->time)->addHours(3)->toIso8601String();
+            $end = Carbon::parse($event->time)->addHours(3)->addMinutes(intval($event->services->time))->toIso8601String();
+
+            return [
+                'title' => $event->title,
+                'start' => $start,
+                'end' => $end
+            ];
+        });
+        return json_encode($formattedEvents);
+    }
+
+    public function lastStep(Request $request)
+    {
+        $data = Carbon::create($request->get('start'))->format('Y-m-d');
+        $hours = Carbon::create($request->get('start'))->format('H:i:s');
+
+        $data = [
+            'data' => $data,
+            'hours' => $hours,
+            'userId' => $request->get('userId'),
+            'prof' => $this->userService->find($request->get('profId')),
+            'cut' => $this->service->find($request->get('cutId'))
+        ];
+
+        return view('barber.schedule.lastStep', $data);
     }
 }

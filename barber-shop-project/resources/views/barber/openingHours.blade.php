@@ -8,8 +8,8 @@
 </head>
 
 
-<body class="d-flex h-100 text-center barbershop-bg">
-    @include('inc.sidebar')
+<body class="text-center barbershop-bg">
+    @include('inc.nav')
     <section class="container">
         <div class="row mt-5">
             <div class="d-inline-block">

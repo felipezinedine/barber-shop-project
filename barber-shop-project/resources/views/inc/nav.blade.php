@@ -1,9 +1,15 @@
-<header class="mb-auto">
-    <div>
-        <h3 class="float-md-start mb-0">Barbearia</h3>
-        <nav class="nav nav-masthead justify-content-center float-md-end">
-            <a class="nav-link fw-bold py-1 px-0 active" aria-current="page" href="#">Lista de Preços</a>
-            <a class="nav-link fw-bold py-1 px-0" href="#">Horário de Funcionamento</a>
-        </nav>
+<nav class="mb-auto navbar navbar-expand-lg navbar-dark bg-dark text-center">
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav ">
+            <li class="nav-item">
+                <a class="nav-link active text-light" href="/">BARBEARIA</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active text-light" href="/barber/price/list">LISTA DE PREÇOS</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active text-light" href="/barber/opening/hours">HORÁRIO DE FUNCIONAMENTO</a>
+            </li>
+        </ul>
     </div>
-</header>
+</nav>

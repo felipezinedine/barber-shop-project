@@ -8,8 +8,8 @@
 </head>
 
 
-<body class="d-flex h-100 text-center barbershop-bg">
-    @include('inc.sidebar')
+<body class="text-center barbershop-bg">
+    @include('inc.nav')
     <section class="container">
         <div style="margin-left: auto; margin-right: auto; margin-top: 10%">
             <h5 class="mb-5 fst-italic">Lista de Serviços e Preços</h5>

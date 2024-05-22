@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Twilio\Rest\Client;
 use Illuminate\Http\Request;
 use App\Services\UserService;
 use App\DTOs\Users\UserCreateDTO;
@@ -14,7 +15,9 @@ class AdminController extends Controller
     protected $from;
     public function __construct(
         protected UserService $service,
-    ) {}
+    ) {
+        $this->client = new Client(env('TWILIO_ACCOUNT_SID'), env('TWILIO_AUTH_TOKEN'));
+    }
     /*********** REQUISIÇÕES -- GET -- */
     public function getAuth()
     {

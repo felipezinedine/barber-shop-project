@@ -8,32 +8,37 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 </head>
 
-<body class="d-flex h-100 text-center barbershop-bg">
-    @include('inc.sidebar')
-    <div class="cover-container d-flex w-60 h-60 p-3 mx-auto flex-column">
+<body class="text-center barbershop-bg">
+    @include('inc.nav')
+    <div class="container-fluid mt-5">
+        <div class="row justify-content-center align-items-center">
+            <div class="col-md-8">
+                <main class="text-center">
+                    <h1 class="fst-italic">Bem-vindo à nossa barbearia</h1>
+                    <p class="lead fst-italic">"Os melhores profissionais, ambiente aconchegante, amplo estacionamento.
+                        Cuidamos de você, da sua família e seus veículos"
+                    </p>
+                    <h6 class="fst-italic">
+                        Utilize o botão abaixo e faça seu agendamento online
+                    </h6>
+                    <p class="lead">
+                        <a href="/schedule/" target="_blank" class="btn btn-lg military-green fw-bold mt-3">Agenda Online</a>
+                    </p>
+                </main>
 
-        <main class="text-center" style="margin-left: auto; margin-right: auto; margin-top: 20%">
-            <h1 class="fst-italic">Bem-vindo a nossa barbearia</h1>
-            <p class="lead fst-italic">"Os melhores profissionais, ambiente aconchegante, amplo estacionamento.
-                Cuidamos de você, da sua família e seus veículos"
-            </p>
-            <h6 class="fst-italic">
-                Utilize o Botão abaixo e faça seu agendamento online
-            </h6>
-            <p class="lead">
-                <a href="/schedule/" target="_blanck" class="btn btn-lg military-green fw-bold mt-3">Agenda Online</a>
-            </p>
-        </main>
+                <hr>
 
-        <hr>
+                <h5 class="fst-italic text-center mb-4">
+                    Nossa Localidade
+                </h5>
 
-        <h5 class="fst-italic text-center">
-            Nossa Localidade
-        </h5>
-
-        <div class="mb-5" id="map" style="height: 600px;"></div>
-
+                <div id="map" style="height: 400px;"></div>
+            </div>
+        </div>
     </div>
+
+
+
 
 
 

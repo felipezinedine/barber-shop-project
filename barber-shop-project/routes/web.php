@@ -32,5 +32,7 @@ Route::prefix('schedule')->group(function () {
     Route::get('/{id}/professional/choice', [ScheduleController::class, 'professionalChoice'])->middleware(Auth::class);
     Route::get('/{cut}/professional/choice/{professional}', [ScheduleController::class,'scheduling']);
     Route::get('/new/search', [ScheduleController::class, 'search']);
-    Route::get('/events/weekly/{date}/{profId}', [ScheduleController::class, 'getWeeklyEvents'])->name('events.weekly');
+    Route::get('/add/events', [ScheduleController::class, 'lastStep']);
+    Route::get('/events/weekly/{profId}', [ScheduleController::class, 'getWeeklyEvents'])->name('events.weekly');
+    Route::get('/events/all', [ScheduleController::class,'eventsAll']);
 });

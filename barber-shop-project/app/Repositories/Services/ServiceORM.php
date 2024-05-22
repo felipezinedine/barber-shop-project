@@ -43,12 +43,19 @@ class ServiceORM implements ServiceRepository
         return $service;
     }
 
-    public function events($startOfWeek, $endOfWeek, $id)
+    public function events($id)
     {
         $events = $this->scheduling->setConnection('mysql')
                        ->where('professional_id', '=', $id)
-                       ->whereBetween('date', [$startOfWeek, $endOfWeek])
+                       ->with('services')
                        ->get();
+        return $events;
+    }
+
+    public function eventsAll()
+    {
+        $events = $this->scheduling->setConnection('mysql')
+                                   ->all();
         return $events;
     }
 }

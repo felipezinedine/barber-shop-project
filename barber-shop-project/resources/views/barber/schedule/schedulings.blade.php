@@ -5,14 +5,9 @@
     @include('inc.head', ['title' => 'Agendamentos'])
     <link rel="canonical" href="https://getbootstrap.com/docs/5.3/examples/cover/">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3">
-    <link href="https://cdn.jsdelivr.net/npm/@fullcalendar/core/main.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/@fullcalendar/list/main.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/core/main.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/list/main.min.js"></script>
-
 </head>
 
-<body class="barbershop-bg">
+<body>
     @include('barber.schedule.inc.nav')
     <section class="d-flex flex-column align-items-center justify-content-center">
         <div class="mt-4 mr-auto container">
@@ -57,52 +52,69 @@
             <h6>Datas Sugeridas</h6>
         </div>
 
-        <div class="container">
-            <div id="calendar"></div>
-        </div>
+        <div class="mb-5" id="calendar"></div>
+
     </section>
 
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-    <script src="js/scripts.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js'></script>
+    <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous">
+    </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
-    <script src="assets/demo/chart-area-demo.js"></script>
-    <script src="assets/demo/chart-bar-demo.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
-    <script src="js/datatables-simple-demo.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            var calendarEl = document.getElementById('calendar');
-            if (!calendarEl) {
-                console.error('Element with id "calendar" not found.');
-                return;
-            }
-
-            var calendar = new FullCalendar.Calendar(calendarEl, {
-                plugins: ['list'],
-                initialView: 'listWeek',
-                events: function(info, successCallback, failureCallback) {
-                    var start = info.startStr;
-                    var profId = {{ $prof->id }};
-                    console.log('Profissional ID:', profId);
-                    if (!start || !profId) {
-                        console.error('Start or profId is missing.');
-                        return;
-                    }
-                    $.ajax({
-                        url: '/events/weekly/' + start + '/' + profId,
-                        success: successCallback,
-                        error: failureCallback
-                    });
+            var calendarId = document.getElementById('calendar');
+            var calendar = new FullCalendar.Calendar(calendarId, {
+                locale: 'pt-br',
+                initialView: 'timeGridWeek',
+                headerToolbar: {
+                    left: 'prev,next',
+                    center: 'title',
+                    right: 'today'
                 },
+                buttonText: {
+                    today: 'Hoje',
+                    month: 'Mês',
+                    week: 'Semana',
+                    day: 'Dia',
+                    list: 'Lista'
+                },
+                events: '/schedule/events/weekly/{{ $prof->id }}',
                 eventTimeFormat: {
                     hour: 'numeric',
                     minute: '2-digit',
                     meridiem: 'short'
                 },
-                headerToolbar: false
-            });
+                hiddenDays: [0],
+                slotMinTime: '08:00:00',
+                slotMaxTime: '20:30:00',
+                selectable: true,
+                select: function(info) {
+                    var now = new Date();
+                    var selectedDateTime = new Date(info.start);
+                    if (selectedDateTime < now || (selectedDateTime.getDate() === now.getDate() &&
+                            selectedDateTime.getHours() < now.getHours())) {
+                        alert('Você não pode adicionar eventos em datas ou horas passadas.');
+                        calendar.unselect();
+                        return;
+                    }
 
+                    userId = {{auth()->user()->id}}
+                    profId = {{$prof->id}}
+                    var eventData = {
+                        title: 'HORÁRIO MARCADO',
+                        start: selectedDateTime.toISOString(),
+                        userId: userId,
+                        profId: profId
+                    };
+
+                    window.location.href = '/schedule/add/events?start=' + encodeURIComponent(selectedDateTime.toISOString()) + '&userId=' + userId + '&profId='+ {{$prof->id}} + '&cutId=' + {{$cut->id}};
+
+                    calendar.unselect();
+                }
+            });
             calendar.render();
         });
     </script>
